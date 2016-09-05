@@ -14,20 +14,34 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                         <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="10" minimumInteritemSpacing="10" id="hds-e6-bXI">
-                            <size key="itemSize" width="50" height="50"/>
+                            <size key="itemSize" width="200" height="200"/>
                             <size key="headerReferenceSize" width="0.0" height="0.0"/>
                             <size key="footerReferenceSize" width="0.0" height="0.0"/>
                             <inset key="sectionInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
                         </collectionViewFlowLayout>
                         <cells>
-                            <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="FlickrCell" id="rZd-w5-Krc">
-                                <rect key="frame" x="0.0" y="64" width="50" height="50"/>
+                            <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="FlickrCellReuseID" id="rZd-w5-Krc" customClass="FlickrPhotoCell" customModule="FlickrSearch" customModuleProvider="target">
+                                <rect key="frame" x="0.0" y="64" width="200" height="200"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
-                                    <rect key="frame" x="0.0" y="0.0" width="50" height="50"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="200" height="200"/>
                                     <autoresizingMask key="autoresizingMask"/>
+                                    <subviews>
+                                        <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="cgd-Bw-Jo9">
+                                            <rect key="frame" x="5" y="5" width="190" height="190"/>
+                                        </imageView>
+                                    </subviews>
                                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                 </view>
+                                <constraints>
+                                    <constraint firstItem="cgd-Bw-Jo9" firstAttribute="leading" secondItem="rZd-w5-Krc" secondAttribute="leading" constant="5" id="73R-yB-2en"/>
+                                    <constraint firstAttribute="trailing" secondItem="cgd-Bw-Jo9" secondAttribute="trailing" constant="5" id="Jaw-bG-sC5"/>
+                                    <constraint firstItem="cgd-Bw-Jo9" firstAttribute="top" secondItem="rZd-w5-Krc" secondAttribute="top" constant="5" id="gtg-NP-0js"/>
+                                    <constraint firstAttribute="bottom" secondItem="cgd-Bw-Jo9" secondAttribute="bottom" constant="5" id="n4A-I0-Neu"/>
+                                </constraints>
+                                <connections>
+                                    <outlet property="imageView" destination="cgd-Bw-Jo9" id="1Jj-Nd-3Vz"/>
+                                </connections>
                             </collectionViewCell>
                         </cells>
                         <connections>

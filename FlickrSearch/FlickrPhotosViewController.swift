@@ -8,11 +8,11 @@
 
 import UIKit
 
-private let reuseIdentifier = "Cell"
+//private let reuseIdentifier = "Cell"
 
 class FlickrPhotosViewController: UICollectionViewController {
     
-    private let reuseIdentifier = "FlickrCell"
+    private let reuseIdentifier = "FlickrCellReuseID"
     private let sectionInsets = UIEdgeInsets(top: 50.0, left: 20.0, bottom: 50.0, right: 20.0)
     private var searches = [FlickrSearchResults]()
     private let flickr = Flickr()
@@ -28,7 +28,7 @@ class FlickrPhotosViewController: UICollectionViewController {
         // self.clearsSelectionOnViewWillAppear = false
 
         // Register cell classes
-        self.collectionView!.registerClass(UICollectionViewCell.self, forCellWithReuseIdentifier: reuseIdentifier)
+        self.collectionView!.registerClass(FlickrPhotoCell.self, forCellWithReuseIdentifier: reuseIdentifier)
 
         // Do any additional setup after loading the view.
     }
@@ -62,9 +62,14 @@ class FlickrPhotosViewController: UICollectionViewController {
     }
 
     override func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
-        let cell = collectionView.dequeueReusableCellWithReuseIdentifier(reuseIdentifier, forIndexPath: indexPath)
+        //1
+        let cell = collectionView.dequeueReusableCellWithReuseIdentifier(reuseIdentifier, forIndexPath: indexPath) as! FlickrPhotoCell
+        //2
+        let flickrPhoto = photoForIndexPath(indexPath)
         cell.backgroundColor = UIColor.blackColor()
-        // Configure the cell
+        //3
+        cell.imageView?.image = flickrPhoto.thumbnail
+
         return cell
     }
 
