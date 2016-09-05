@@ -31,10 +31,34 @@ class FlickrPhotosViewController: UICollectionViewController {
                 imageArray.append(photo.thumbnail!);
             }
             
-            let shareScreen = UIActivityViewController(activityItems: imageArray, applicationActivities: nil)
-            let popover = UIPopoverController(contentViewController: shareScreen)
-            popover.presentPopoverFromBarButtonItem(self.navigationItem.rightBarButtonItems!.first as UIBarButtonItem!,
-                                                    permittedArrowDirections: UIPopoverArrowDirection.Any, animated: true)
+//            let shareScreen = UIActivityViewController(activityItems: imageArray, applicationActivities: nil)
+//            let popover = UIPopoverController(contentViewController: shareScreen)
+//            popover.presentPopoverFromBarButtonItem(self.navigationItem.rightBarButtonItems!.first as UIBarButtonItem!,
+//                                                    permittedArrowDirections: UIPopoverArrowDirection.Any, animated: true)
+            
+            // Present UIActivityViewController for iPad
+            if UIDevice.currentDevice().userInterfaceIdiom == .Pad {
+                
+                let shareScreen = UIActivityViewController(activityItems: imageArray, applicationActivities: nil)
+                let sourceButton = self.navigationItem.rightBarButtonItems!.first! as UIBarButtonItem
+                
+                shareScreen.modalPresentationStyle = .Popover
+                shareScreen.popoverPresentationController?.permittedArrowDirections = .Any
+                shareScreen.popoverPresentationController?.barButtonItem = sourceButton
+                
+                self.presentViewController(shareScreen, animated: true, completion: nil)
+            }
+            // Present UIActivityViewController for iPhone!
+            else if UIDevice.currentDevice().userInterfaceIdiom == .Phone {
+                
+                // Separate Activity View Controller to present for iPhones
+                let activityVC = UIActivityViewController(activityItems: imageArray, applicationActivities: nil)
+                let sourceView = self.view
+                
+                activityVC.popoverPresentationController?.sourceView = sourceView
+                
+                self.presentViewController(activityVC, animated: true, completion: nil)
+            }
         }
         
         sharing = !sharing
