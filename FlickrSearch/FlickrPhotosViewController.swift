@@ -17,6 +17,55 @@ class FlickrPhotosViewController: UICollectionViewController {
     private var searches = [FlickrSearchResults]()
     private let flickr = Flickr()
     
+    private var selectedPhotos = [FlickrPhoto]()
+    private let shareTextLabel = UILabel()
+    
+    @IBAction func share(sender: AnyObject) {
+        if searches.isEmpty {
+            return
+        }
+        
+        if !selectedPhotos.isEmpty {
+            var imageArray = [UIImage]()
+            for photo in self.selectedPhotos {
+                imageArray.append(photo.thumbnail!);
+            }
+            
+            let shareScreen = UIActivityViewController(activityItems: imageArray, applicationActivities: nil)
+            let popover = UIPopoverController(contentViewController: shareScreen)
+            popover.presentPopoverFromBarButtonItem(self.navigationItem.rightBarButtonItems!.first as UIBarButtonItem!,
+                                                    permittedArrowDirections: UIPopoverArrowDirection.Any, animated: true)
+        }
+        
+        sharing = !sharing
+    }
+    
+    func updateSharedPhotoCount() {
+        shareTextLabel.textColor = themeColor
+        shareTextLabel.text = "\(selectedPhotos.count) photos selected"
+        shareTextLabel.sizeToFit()
+    }
+    
+    var sharing : Bool = false {
+        didSet {
+            collectionView?.allowsMultipleSelection = sharing
+            collectionView?.selectItemAtIndexPath(nil, animated: true, scrollPosition: .None)
+            selectedPhotos.removeAll(keepCapacity: false)
+            if sharing && largePhotoIndexPath != nil {
+                largePhotoIndexPath = nil
+            }
+            
+            let shareButton = self.navigationItem.rightBarButtonItems!.first as UIBarButtonItem!
+            if sharing {
+                updateSharedPhotoCount()
+                let sharingDetailItem = UIBarButtonItem(customView: shareTextLabel)
+                navigationItem.setRightBarButtonItems([shareButton,sharingDetailItem], animated: true)
+            } else {
+                navigationItem.setRightBarButtonItems([shareButton], animated: true)
+            }
+        }
+    }
+    
     //1
     var largePhotoIndexPath : NSIndexPath? {
         didSet {
@@ -162,12 +211,33 @@ class FlickrPhotosViewController: UICollectionViewController {
 
     // Uncomment this method to specify if the specified item should be selected
     override func collectionView(collectionView: UICollectionView, shouldSelectItemAtIndexPath indexPath: NSIndexPath) -> Bool {
+        if sharing {
+            return true
+        }
         if largePhotoIndexPath == indexPath {
             largePhotoIndexPath = nil
         } else {
             largePhotoIndexPath = indexPath
         }
         return false
+    }
+    
+    override func collectionView(collectionView: UICollectionView, didSelectItemAtIndexPath indexPath: NSIndexPath) {
+        if sharing {
+            let photo = photoForIndexPath(indexPath)
+            selectedPhotos.append(photo)
+            updateSharedPhotoCount()
+        }
+    }
+    
+    override func collectionView(collectionView: UICollectionView, didDeselectItemAtIndexPath indexPath: NSIndexPath) {
+        if sharing {
+            let selectedPhoto = self.photoForIndexPath(indexPath)
+            if let foundIndex = self.selectedPhotos.indexOf(selectedPhoto) {
+                selectedPhotos.removeAtIndex(foundIndex)
+                updateSharedPhotoCount()
+            }
+        }
     }
 
     /*

@@ -86,6 +86,11 @@
                                 <outlet property="delegate" destination="tiO-By-gT2" id="12v-eE-eDx"/>
                             </connections>
                         </textField>
+                        <barButtonItem key="rightBarButtonItem" systemItem="action" id="h5K-7k-pZG">
+                            <connections>
+                                <action selector="share:" destination="tiO-By-gT2" id="b2F-dg-rWs"/>
+                            </connections>
+                        </barButtonItem>
                     </navigationItem>
                 </collectionViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="8Eq-iY-fqK" userLabel="First Responder" sceneMemberID="firstResponder"/>
