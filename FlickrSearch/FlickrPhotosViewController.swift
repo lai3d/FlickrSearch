@@ -72,6 +72,21 @@ class FlickrPhotosViewController: UICollectionViewController {
 
         return cell
     }
+    
+    override func collectionView(collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, atIndexPath indexPath: NSIndexPath) -> UICollectionReusableView {
+        //1
+        switch kind {
+        //2
+        case UICollectionElementKindSectionHeader:
+            //3
+            let headerView = collectionView.dequeueReusableSupplementaryViewOfKind(kind, withReuseIdentifier: "FlickrPhotoHeaderView", forIndexPath: indexPath) as! FlickrPhotoHeaderView
+            headerView.label.text = searches[indexPath.section].searchTerm
+            return headerView
+        default:
+            //4
+            assert(false, "Unexpected element kind")
+        }
+    }
 
     // MARK: UICollectionViewDelegate
 
